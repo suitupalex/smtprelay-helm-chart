@@ -1,6 +1,6 @@
 apiVersion: v2
-name: smtprelay-helm-chart
-description: A Helm chart for Kubernetes
+name: smtprelay
+description: Helm chart for smtprelay.
 
 # A chart can be either an 'application' or a 'library' chart.
 #

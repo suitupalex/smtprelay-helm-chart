@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "smtprelay-helm-chart.fullname" . }}
+  name: {{ include "smtprelay.fullname" . }}
   labels:
-    {{- include "smtprelay-helm-chart.labels" . | nindent 4 }}
+    {{- include "smtprelay.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "smtprelay-helm-chart.selectorLabels" . | nindent 6 }}
+      {{- include "smtprelay.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "smtprelay-helm-chart.selectorLabels" . | nindent 8 }}
+        {{- include "smtprelay.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "smtprelay-helm-chart.serviceAccountName" . }}
+      serviceAccountName: {{ include "smtprelay.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
