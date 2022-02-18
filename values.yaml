@@ -84,5 +84,5 @@ affinity: {}
 
 config:
   remote_host: smtp.example.com:25
-  remote_user: user
+  remote_user: username
   remote_pass: password
