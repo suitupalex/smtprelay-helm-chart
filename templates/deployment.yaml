@@ -34,19 +34,32 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: 80
+            - name: smtp
+              containerPort: 2525
               protocol: TCP
           livenessProbe:
-            httpGet:
-              path: /
-              port: http
+            exec:
+              command:
+                - ls
+            initialDelaySeconds: 5
+            periodSeconds: 5
           readinessProbe:
-            httpGet:
-              path: /
-              port: http
+            exec:
+              command:
+                - ls
+            initialDelaySeconds: 5
+            periodSeconds: 5
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          command: ["/usr/local/bin/smtprelay"]
+          args: [
+            "-listen=127.0.0.1:2525",
+            "-hostname=localhost",
+            "-remote_host={{ .Values.config.remote_host }}",
+            "-remote_user={{ .Values.config.remote_user }}",
+            "-remote_pass={{ .Values.config.remote_pass }}",
+            "-remote_auth=login",
+          ]
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
